@@ -9,10 +9,8 @@ import javafx.scene.control.MenuItem;
  */
 public class Menus extends MenuBar {
 
-    Menu file;
-
     Menus() {
-        file = new Menu("File");
+        Menu file = new Menu("File");
         MenuItem save = new MenuItem("Save file");
         MenuItem open = new MenuItem("Open file");
         file.getItems().addAll(open, save);

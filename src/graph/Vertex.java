@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,12 +13,15 @@ public class Vertex {
     private double x;
     private double y;
     private String name;
-    private List<Vertex> neighbouringVertexes;
+    private List<Arc> inputArcs;
+    private List<Arc> outputArcs;
+
 
     public Vertex(double posX, double posY) {
         x = posX;
         y = posY;
-        neighbouringVertexes = new ArrayList<Vertex>();
+        inputArcs = new LinkedList<Arc>();
+        outputArcs = new LinkedList<Arc>();
     }
 
     public Vertex(double posX, double posY, String name) {
@@ -45,7 +49,19 @@ public class Vertex {
         return (vertex.getX() == x && vertex.getY() == y);
     }
 
-    public void addNeighbour(Vertex neighbour){
-        neighbouringVertexes.add(neighbour);
+    public void addOutputArc(Arc arc){
+        outputArcs.add(arc);
+    }
+
+    public void addInputArc(Arc arc){
+        inputArcs.add(arc);
+    }
+
+    public List<Arc> getInputArcs() {
+        return inputArcs;
+    }
+
+    public List<Arc> getOutputArcs() {
+        return outputArcs;
     }
 }
