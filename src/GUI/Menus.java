@@ -9,7 +9,6 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by Александр on 26.09.2014.
@@ -29,7 +28,8 @@ public class Menus extends MenuBar {
                 fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph fies (*.gr)", "*.gr"));
                 fileChooser.setTitle("Save graph");
                 File graphFile = fileChooser.showSaveDialog(null);
-                graphController.writeGraph(graphFile);
+                if (graphFile != null && graphFile.exists())
+                    graphController.writeGraph(graphFile);
             }
         });
 
@@ -40,7 +40,8 @@ public class Menus extends MenuBar {
                 fileChooser.setTitle("Open graph");
                 fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph fies (*.gr)", "*.gr"));
                 File graphFile = fileChooser.showOpenDialog(null);
-                graphController.readGraph(graphFile);
+                if (graphFile != null && graphFile.exists())
+                    graphController.readGraph(graphFile);
 
             }
         });
