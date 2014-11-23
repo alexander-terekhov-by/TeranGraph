@@ -1,12 +1,15 @@
 package controller;
 
 import GUI.GraphArea;
+import com.google.gson.Gson;
 import constants.GraphConstants;
+import fileWorker.IOFile;
 import graph.Arc;
 import graph.Graph;
 import graph.Vertex;
 
 import java.awt.*;
+import java.io.*;
 
 import static java.lang.Math.pow;
 
@@ -14,13 +17,23 @@ public class Controller {
     private Vertex movedVertex;
     private Graph graph;
     private GraphArea view;
+    private IOFile ioFile;
 
     public Controller() {
         graph = new Graph();
+        ioFile = new IOFile();
     }
 
     public void setView(GraphArea view) {
         this.view = view;
+    }
+
+    public void makeVertex(double x, double y) {
+        if (isVertexCanBePlaced(x, y)) {
+            Vertex newVertex = new Vertex(x, y);
+            graph.addVertex(newVertex);
+            view.drawVertex(x, y, newVertex.getName(), GraphConstants.MAIN_COLOR);
+        }
     }
 
     private boolean isVertexCanBePlaced(double x, double y) {
@@ -41,6 +54,57 @@ public class Controller {
                 return oneVertexFromGraph;
         }
         return null;
+    }
+
+    public void prepareToMoveVertex(double x, double y) {
+        movedVertex = getVertexByCoordinates(x, y);
+        drawGraphWithoutVertex(movedVertex);
+    }
+
+    public void moveVertex(double x, double y) {
+        if (movedVertex != null) {
+            for (Arc arc : movedVertex.getInputArcs()) {
+                view.drawArc(arc.getMainVertex().getX(), arc.getMainVertex().getY(), x, y, GraphConstants.MAIN_COLOR);
+            }
+            for (Arc arc : movedVertex.getOutputArcs()) {
+                view.drawArc(x, y, arc.getSecondVertex().getX(), arc.getSecondVertex().getY(), GraphConstants.MAIN_COLOR);
+            }
+            view.drawVertex(x, y, movedVertex.getName(), GraphConstants.MAIN_COLOR);
+        }
+    }
+
+    public void endVertexMove(double x, double y) {
+        if (movedVertex != null) {
+            movedVertex.setX(x);
+            movedVertex.setY(y);
+            movedVertex = null;
+            drawGraphWithoutVertex(null);
+        }
+    }
+
+    public void setVertexId(String id, double x, double y) {
+        Vertex vertex = getVertexByCoordinates(x, y);
+        vertex.setName(id);
+        drawGraphWithoutVertex(null);
+    }
+
+    public void makeArc(double x1, double y1, double x2, double y2) {
+        Vertex vertex1 = getVertexByCoordinates(x1, y1);
+        Vertex vertex2 = getVertexByCoordinates(x2, y2);
+        if (vertex2 != null && vertex1 != null && !vertex1.identical(vertex2)) {
+            view.drawArc(vertex1.getX(), vertex1.getY(), vertex2.getX(), vertex2.getY(), GraphConstants.MAIN_COLOR);
+            Arc newArc = new Arc(vertex1, vertex2);
+            graph.addArc(newArc);
+            vertex1.addOutputArc(newArc);
+            vertex2.addInputArc(newArc);
+        }
+    }
+
+    public void drawPreArc(double x1, double y1, double x2, double y2) {
+        Vertex vertex1 = getVertexByCoordinates(x1, y1);
+        if (vertex1 != null) {
+            view.drawPreArc(vertex1.getX(), vertex1.getY(), x2, y2);
+        }
     }
 
     private Arc getArcByCoordinates(double x, double y) {
@@ -70,78 +134,56 @@ public class Controller {
         graph = new Graph();
     }
 
-    public void makeVertex(double x, double y) {
-        if (isVertexCanBePlaced(x, y)) {
-            Vertex newVertex = new Vertex(x, y);
-            graph.addVertex(newVertex);
-            view.drawVertex(x, y, GraphConstants.MAIN_COLOR);
-        }
-    }
-
     public void lightElement(double x, double y) {
-        //view.returnToPreviousState();
         Vertex vertex = getVertexByCoordinates(x, y);
         Arc arc = getArcByCoordinates(x, y);
         if (vertex != null) {
-            view.drawVertex(vertex.getX(), vertex.getY(), GraphConstants.TMP_COLOR);
+            view.drawVertex(vertex.getX(), vertex.getY(), vertex.getName(), GraphConstants.TMP_COLOR);
         } else if (arc != null) {
             view.drawArc(arc.getMainVertex().getX(), arc.getMainVertex().getY(), arc.getSecondVertex().getX(), arc.getSecondVertex().getY(), GraphConstants.TMP_COLOR);
         }
     }
 
-    public void makeArc(double x1, double y1, double x2, double y2) {
-        Vertex vertex1 = getVertexByCoordinates(x1, y1);
-        Vertex vertex2 = getVertexByCoordinates(x2, y2);
-        if (vertex2 != null && vertex1 != null && !vertex1.identical(vertex2)) {
-            view.drawArc(vertex1.getX(), vertex1.getY(), vertex2.getX(), vertex2.getY(), GraphConstants.MAIN_COLOR);
-            Arc newArc = new Arc(vertex1, vertex2);
-            graph.addArc(newArc);
-            vertex1.addOutputArc(newArc);
-            vertex1.addInputArc(newArc);
-        }
-    }
-
-    public void prepareToMoveVertex(double x, double y) {
-        movedVertex = getVertexByCoordinates(x, y);
-    }
-
-    public void moveVertex(double x, double y) {
-        view.returnToPreviousState();
-        if (movedVertex != null) {
-            for (Arc arc : movedVertex.getInputArcs()) {
-                view.drawArc(arc.getMainVertex().getX(),arc.getMainVertex().getY(), arc.getSecondVertex().getX(), arc.getSecondVertex().getY(), GraphConstants.MAIN_COLOR);
-            }
-            for (Arc arc : movedVertex.getOutputArcs()) {
-                view.drawArc(arc.getMainVertex().getX(),arc.getMainVertex().getY(), arc.getSecondVertex().getX(), arc.getSecondVertex().getY(), GraphConstants.MAIN_COLOR);
-            }
-            view.drawVertex(x, y, GraphConstants.MAIN_COLOR);
-        }
-    }
-
-    public void endVertexMove(double x, double y) {
-        if (movedVertex != null) {
-            movedVertex.setX(x);
-            movedVertex.setY(y);
-            movedVertex = null;
-            drawGraph();
-        }
-    }
-
-    public void drawGraph() {
+    public void drawGraphWithoutVertex(Vertex removedVertex) {
         view.cleanCanvas();
-        for (Vertex vertex : graph.getAllVertexes())
-            view.drawVertex(vertex.getX(), vertex.getY(), GraphConstants.MAIN_COLOR);
-        for (Arc arc : graph.getAllArcs())
-            view.drawArc(arc.getMainVertex().getX(), arc.getMainVertex().getY(), arc.getSecondVertex().getX(), arc.getSecondVertex().getY(), GraphConstants.MAIN_COLOR);
+        for (Vertex vertex : graph.getAllVertexes()) {
+            if (vertex != removedVertex) {
+                for (Arc arc : vertex.getOutputArcs()) {
+                    if (arc.getSecondVertex() != removedVertex)
+                        view.drawArc(arc.getMainVertex().getX(), arc.getMainVertex().getY(), arc.getSecondVertex().getX(), arc.getSecondVertex().getY(), GraphConstants.MAIN_COLOR);
+                }
+                view.drawVertex(vertex.getX(), vertex.getY(), vertex.getName(), GraphConstants.MAIN_COLOR);
+            }
+        }
     }
 
     public boolean haveElementOnPos(double x, double y) {
         return (getVertexByCoordinates(x, y) != null || getArcByCoordinates(x, y) != null);
     }
 
-    public void deleteElement(double x, double y){
-        graph.deleteArc(getArcByCoordinates(x, y));
+    public void deleteElement(double x, double y) {
         graph.deleteVertex(getVertexByCoordinates(x, y));
-        drawGraph();
+        graph.deleteArc(getArcByCoordinates(x, y));
+        drawGraphWithoutVertex(null);
+
+    }
+
+    public void writeGraph(File file)  {
+        try {
+            ioFile.writeGraph(graph,file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readGraph(File file) {
+        try {
+            graph = ioFile.openGraphFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        drawGraphWithoutVertex(null);
     }
 }

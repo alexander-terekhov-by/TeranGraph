@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,12 +15,14 @@ import javafx.stage.Stage;
  * Created by Александр on 18.11.2014.
  */
 public class SetIDDialog {
-    public SetIDDialog() {
-        Stage primaryStage = new Stage();
+    public  String id;
+    Stage primaryStage;
+    public SetIDDialog(final GraphArea.OnClickMenu menu) {
+        primaryStage = new Stage();
         VBox root = new VBox();
         VBox pane = new VBox();
         Label label = new Label("Input ID");
-        TextField field = new TextField();
+        final TextField field = new TextField();
         primaryStage.setResizable(false);
         primaryStage.setTitle("ID");
         Button add = new Button("Set");
@@ -33,7 +36,8 @@ public class SetIDDialog {
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                menu.setID(field.getText());
+                SetIDDialog.this.primaryStage.close();
             }
         });
 

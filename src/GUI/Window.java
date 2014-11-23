@@ -20,11 +20,13 @@ public class Window extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         BorderPane root = new BorderPane();
-        Menus menu = new Menus();
+
         primaryStage.setTitle("Graph editor");
         primaryStage.setScene(new Scene(root, 600, 500));
         primaryStage.setResizable(false);
-        gArea = new GraphArea(540, 470, new Controller());
+        Controller graphController = new Controller();
+        Menus menu = new Menus(graphController);
+        gArea = new GraphArea(540, 470,graphController );
         root.setTop(menu);
         root.setCenter(gArea);
         primaryStage.show();

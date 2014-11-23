@@ -1,5 +1,6 @@
 package graph;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,9 +8,9 @@ import java.util.List;
 /**
  * Created by Александр on 26.09.2014.
  */
-public class Vertex {
+public class Vertex implements Serializable {
 
-
+    static int id = 0;
     private double x;
     private double y;
     private String name;
@@ -22,11 +23,8 @@ public class Vertex {
         y = posY;
         inputArcs = new LinkedList<Arc>();
         outputArcs = new LinkedList<Arc>();
-    }
-
-    public Vertex(double posX, double posY, String name) {
-        this(posX, posY);
-        this.name = name;
+        name = "" + id;
+        id++;
     }
 
     public double getX() {
@@ -64,4 +62,19 @@ public class Vertex {
     public List<Arc> getOutputArcs() {
         return outputArcs;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return  "V" + name;
+    }
+
+
 }

@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Univer">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../.." />
+      <root url="jar://$PROJECT_DIR$/../../../../Java/lib/google-gson-2.2.4-release/google-gson-2.2.4/gson-2.2.4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../Java/lib/google-gson-2.2.4-release/google-gson-2.2.4/gson-2.2.4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../Java/lib/google-gson-2.2.4-release/google-gson-2.2.4/gson-2.2.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../.." recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/../../../../Java/lib/google-gson-2.2.4-release/google-gson-2.2.4/gson-2.2.4-javadoc.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/../../../../Java/lib/google-gson-2.2.4-release/google-gson-2.2.4/gson-2.2.4-sources.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/../../../../Java/lib/google-gson-2.2.4-release/google-gson-2.2.4/gson-2.2.4.jar!/" recursive="false" />
+  </library>
+</component>

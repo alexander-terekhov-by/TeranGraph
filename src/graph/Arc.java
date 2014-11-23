@@ -1,9 +1,11 @@
 package graph;
 
+import java.io.Serializable;
+
 /**
  * Created by Александр on 19.11.2014.
  */
-public class Arc {
+public class Arc implements Serializable {
     private Vertex mainVertex;
     private Vertex secondVertex;
     private String name;
@@ -19,5 +21,14 @@ public class Arc {
 
     public Vertex getMainVertex() {
         return mainVertex;
+    }
+
+
+    @Override
+    public String toString() {
+        return "{"
+                 + mainVertex +
+                ", " + secondVertex +
+                '}';
     }
 }
