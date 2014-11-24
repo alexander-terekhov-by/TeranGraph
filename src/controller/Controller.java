@@ -203,10 +203,12 @@ public class Controller {
 
     private void drawHamilton(List<Vertex> cycle){
         int i = 1;
-        for(Vertex vertex : cycle) {
-            view.markVertex( vertex.getX(), vertex.getY(), i + "");
-            i++;
+        if (cycle  != null) {
+            for (Vertex vertex : cycle) {
+                view.markVertex(vertex.getX(), vertex.getY(), i + "");
+                i++;
+            }
+            view.saveState();
         }
-        view.saveState();
     }
 }

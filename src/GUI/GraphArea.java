@@ -100,8 +100,7 @@ public class GraphArea extends BorderPane {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(GraphConstants.TMP_COLOR);
         gc.setLineWidth(GraphConstants.TEXT_WIDTH);
-        gc.strokeText(id, posX - 2, posY + 5);
-        //gc.fillOval(posX - GraphConstants.VERTEX_RADIUS + 2, posY - GraphConstants.VERTEX_RADIUS + 2, GraphConstants.VERTEX_RADIUS * 2 - 4, GraphConstants.VERTEX_RADIUS * 2 - 4);
+        gc.strokeText(id, posX - 4, posY + 5);
     }
 
     public void drawVertex(double posX, double posY, String name, Color color) {
