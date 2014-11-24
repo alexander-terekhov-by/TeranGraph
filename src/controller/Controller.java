@@ -1,15 +1,17 @@
 package controller;
 
 import GUI.GraphArea;
-import com.google.gson.Gson;
 import constants.GraphConstants;
 import fileWorker.IOFile;
 import graph.Arc;
 import graph.Graph;
+import graph.HamiltonianCycleFinder;
 import graph.Vertex;
 
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import static java.lang.Math.pow;
 
@@ -87,6 +89,13 @@ public class Controller {
         vertex.setName(id);
         drawGraphWithoutVertex(null);
     }
+
+    /*public void getVertexByID(String id) {
+        for (Vertex vertex : graph.getAllVertexes()) {
+            if (vertex.getName().equals(id))
+                view.markVertex(vertex.getX(), vertex.getY());
+        }
+    }*/
 
     public void makeArc(double x1, double y1, double x2, double y2) {
         Vertex vertex1 = getVertexByCoordinates(x1, y1);
@@ -168,9 +177,9 @@ public class Controller {
 
     }
 
-    public void writeGraph(File file)  {
+    public void writeGraph(File file) {
         try {
-            ioFile.writeGraph(graph,file);
+            ioFile.writeGraph(graph, file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -185,5 +194,19 @@ public class Controller {
             e.printStackTrace();
         }
         drawGraphWithoutVertex(null);
+        view.saveState();
+    }
+
+    public void findHamilton() {
+        drawHamilton(new HamiltonianCycleFinder(graph).getCycle());
+    }
+
+    private void drawHamilton(List<Vertex> cycle){
+        int i = 1;
+        for(Vertex vertex : cycle) {
+            view.markVertex( vertex.getX(), vertex.getY(), i + "");
+            i++;
+        }
+        view.saveState();
     }
 }

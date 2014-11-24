@@ -9,8 +9,6 @@ import java.util.List;
  * Created by Александр on 26.09.2014.
  */
 public class Vertex implements Serializable {
-
-    static int id = 0;
     private double x;
     private double y;
     private String name;
@@ -23,8 +21,8 @@ public class Vertex implements Serializable {
         y = posY;
         inputArcs = new LinkedList<Arc>();
         outputArcs = new LinkedList<Arc>();
-        name = "" + id;
-        id++;
+        name = "" ;
+
     }
 
     public double getX() {

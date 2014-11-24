@@ -21,9 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 
-/**
- * Created by Александр on 26.09.2014.
- */
+
 public class GraphArea extends BorderPane {
     private double width;
     private double height;
@@ -49,7 +47,7 @@ public class GraphArea extends BorderPane {
         tmpImage = canvas.snapshot(new SnapshotParameters(), null);
     }
 
-    private void saveState() {
+    public void saveState() {
         tmpImage = canvas.snapshot(new SnapshotParameters(), null);
     }
 
@@ -96,6 +94,14 @@ public class GraphArea extends BorderPane {
         gc.setStroke(GraphConstants.TEXT_COLOR);
         gc.setLineWidth(GraphConstants.TEXT_WIDTH);
         gc.strokeText(text, posX1, posY1);
+    }
+
+    public void markVertex(double posX, double posY, String id){
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(GraphConstants.TMP_COLOR);
+        gc.setLineWidth(GraphConstants.TEXT_WIDTH);
+        gc.strokeText(id, posX - 2, posY + 5);
+        //gc.fillOval(posX - GraphConstants.VERTEX_RADIUS + 2, posY - GraphConstants.VERTEX_RADIUS + 2, GraphConstants.VERTEX_RADIUS * 2 - 4, GraphConstants.VERTEX_RADIUS * 2 - 4);
     }
 
     public void drawVertex(double posX, double posY, String name, Color color) {
@@ -260,8 +266,7 @@ public class GraphArea extends BorderPane {
             setID.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    setID("OLOLOSH");
-                    SetIDDialog dialog = new SetIDDialog(OnClickMenu.this);
+                     new SetIDDialog(OnClickMenu.this);
 
                 }
             });

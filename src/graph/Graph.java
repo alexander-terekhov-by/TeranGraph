@@ -29,10 +29,6 @@ public class Graph implements Serializable {
             allArcs.remove(arc);
             arc.getSecondVertex().getInputArcs().remove(arc);
             arc.getMainVertex().getOutputArcs().remove(arc);
-            /*for (Vertex vertex : allVertexes){
-                vertex.getOutputArcs().remove(arc);
-                vertex.getInputArcs().remove(arc);
-            }*/
         }
     }
     public  void deleteVertex(Vertex vertex){
@@ -47,8 +43,6 @@ public class Graph implements Serializable {
             allArcs.removeAll(vertex.getInputArcs());
             allArcs.removeAll(vertex.getOutputArcs());
             allVertexes.remove(vertex);
-            System.out.println("vertex was removed:" + vertex);
-            //System.out.println("all vertexes:" + allVertexes.toString());
         }
     }
 
